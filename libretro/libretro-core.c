@@ -2695,7 +2695,12 @@ void retro_set_environment(retro_environment_t cb)
 #endif
             { NULL, NULL },
          },
-         "ReSID"
+         //jz4760 run at 30 fps with resid
+         #if defined (RETROFW)
+            "FastSID"
+         #else
+            "ReSID"
+         #endif
       },
 #if !defined(__X64DTV__)
       {
@@ -2868,7 +2873,12 @@ void retro_set_environment(retro_environment_t cb)
             { "96000", NULL },
             { NULL, NULL },
          },
-         "48000"
+         #if defined (RETROFW)
+            "22050"
+         #else
+            "48000"
+         #endif
+
       },
 #if !defined(__XPET__) && !defined(__XCBM2__)
       {

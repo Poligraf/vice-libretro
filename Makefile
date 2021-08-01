@@ -338,7 +338,22 @@ else ifeq ($(platform), gcw0)
    COMMONFLAGS += -DDINGUX -fomit-frame-pointer -ffast-math -march=mips32 -mtune=mips32r2 -mhard-float
    COMMONFLAGS += -DHAVE_SYS_TYPES_H -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L
    CFLAGS += -std=c99
-
+   
+# RETROFW
+else ifeq ($(platform), retrofw)
+   TARGET := $(TARGET_NAME)_libretro.so
+   CC = /opt/retrofw-toolchain/usr/bin/mipsel-linux-gcc
+   CXX = /opt/retrofw-toolchain/usr/bin/mipsel-linux-g++
+   AR = /opt/retrofw-toolchain/usr/bin/mipsel-linux-ar
+   LDFLAGS += -shared -Wl,--version-script=$(CORE_DIR)/libretro/link.T -flto
+   fpic := -fPIC
+   OLD_GCC := 1
+   COMMONFLAGS += -DDINGUX -DRETROFW -fomit-frame-pointer -ffast-math -march=mips32 -mtune=mips32 -mhard-float 
+   COMMONFLAGS += -DHAVE_SYS_TYPES_H -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L
+   CFLAGS += -std=c99 -flto 
+   CFLAGS += -fdata-sections -ffunction-sections
+   CXXFLAGS += -flto  
+   
 # ARM
 else ifneq (,$(findstring armv,$(platform)))
    TARGET := $(TARGET_NAME)_libretro.so
